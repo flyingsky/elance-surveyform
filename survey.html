@@ -21,64 +21,68 @@
 </head>
 <body>
 <div class="survey">
-  <div class="item">
-    <div class="item-title">1. Rank in order of importance</div>
-    <ul id="sortable">
-      <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 1</li>
-      <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 2</li>
-      <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 3</li>
-      <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 4</li>
-    </ul>
-  </div>
-
-  <div class="item">
-    <div class="item-title">2. Rate my performance</div>
-    <div id="performanceLabels">
-      <span class="option1">Terrible</span>
-      <span class="option2">Not Good</span>
-      <span class="option3">Average</span>
-      <span class="option4">Good</span>
-      <span class="option5">Excellent</span>
+  <div class="column">
+    <div class="item">
+      <div class="item-title">1. Rank in order of importance</div>
+      <ul class="sortable">
+        <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 1</li>
+        <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 2</li>
+        <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 3</li>
+        <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 4</li>
+      </ul>
     </div>
-    <div class="slider" id="performanceSlider"></div>
-  </div>
 
-  <div class="item question3">
-    <div class="item-title">3. Priorities</div>
-    <div class="chart"></div>
-    <div id="sliders">
-      <span class="title-lock">Lock</span>
-      <span class="chart-slider slider">20</span>
-      <input type="checkbox">
-      <label></label>
-      <span class="chart-slider slider">20</span>
-      <input type="checkbox">
-      <label></label>
-      <span class="chart-slider slider">20</span>
-      <input type="checkbox">
-      <label></label>
-      <span class="chart-slider slider">20</span>
-      <input type="checkbox">
-      <label></label>
-      <span class="chart-slider slider">20</span>
-      <input type="checkbox">
-      <label></label>
+    <div class="item">
+      <div class="item-title">2. Rate my performance</div>
+      <div id="performanceLabels">
+        <span class="option1">Terrible</span>
+        <span class="option2">Not Good</span>
+        <span class="option3">Average</span>
+        <span class="option4">Good</span>
+        <span class="option5">Excellent</span>
+      </div>
+      <div class="slider" id="performanceSlider"></div>
     </div>
   </div>
 
-  <form method="post">
-    <div class="form-item">
-      <input class="input" type="text" name="name" id="name" placeholder="Your name">
+  <div class="column">
+    <div class="item question3">
+      <div class="item-title">3. Priorities</div>
+      <div class="chart"></div>
+      <div id="sliders">
+        <span class="title-lock">Lock</span>
+        <span class="chart-slider slider">20</span>
+        <input type="checkbox">
+        <label></label>
+        <span class="chart-slider slider">20</span>
+        <input type="checkbox">
+        <label></label>
+        <span class="chart-slider slider">20</span>
+        <input type="checkbox">
+        <label></label>
+        <span class="chart-slider slider">20</span>
+        <input type="checkbox">
+        <label></label>
+        <span class="chart-slider slider">20</span>
+        <input type="checkbox">
+        <label></label>
+      </div>
     </div>
-
-    <div class="form-item pull-left ">
-      <input class="input" type="email" name="email" id="email" placeholder="E-mail address">
-    </div>
-
-    <div class="form-item pull-right" style="text-align: center">
-      <input class="input" type="submit" value="SUBMIT" id="btnSubmit">
-    </div>
-  </form>
+  </div>
 </div>
+
+<form method="post">
+  <div class="form-item">
+    <input class="input" type="text" name="name" id="name" placeholder="Your name">
+  </div>
+
+  <div class="form-item pull-left ">
+    <input class="input" type="email" name="email" id="email" placeholder="E-mail address">
+  </div>
+
+  <div class="form-item pull-right" style="text-align: center">
+    <input class="input" type="submit" value="SUBMIT" id="btnSubmit">
+  </div>
+</form>
 </body>
 </html>

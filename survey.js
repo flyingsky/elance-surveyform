@@ -3,11 +3,13 @@
  */
 
 $(function() {
+
+
   // sort question
-  $( "#sortable" ).sortable({
+  $( ".sortable" ).sortable({
     placeholder: "ui-state-highlight"
   });
-  $( "#sortable" ).disableSelection();
+  $( ".sortable" ).disableSelection();
 
   // slider question
   var questionStep = 10;
@@ -33,8 +35,10 @@ $(function() {
   }
 
   (function question3() {
-    var data = $('#performanceLabels span').map(function() {
-      return {title: $(this).text()};
+    var titles = ['Terrible', 'Not Good', 'Average', 'Good', 'Excellent'];
+
+    var data = $(titles).map(function(i) {
+      return {title: titles[i]};
     });
 
     var colors = ["#f7f06c", "#f37648", "#99ce9a", "#8ed3d8", "#cb9ac7"];
@@ -198,7 +202,7 @@ $(function() {
   function collectSurvey() {
     var result = [];
     // question 1
-    var question1 = $('#sortable li').map(function(){
+    var question1 = $('.sortable li').map(function(){
       return $(this).text();
     }).get().join(' / ');
     result.push('1. Rank: ' + question1);
@@ -250,16 +254,25 @@ $(function() {
       return false;
     }
 
-    $.ajax('postSurvey.php', {
+    $('#btnSubmit').val('SENDING.....');
+
+    $.ajax('survey.php', {
+      type: 'POST',
       data: {
         name: $('#name').val(),
         email: $('#email').val(),
         content: result.join(' <br/> ')
       }
     }).success(function(data) {
-      alert('Succeed to submit survey, thanks!');
+      if (data === 'ok') {
+        alert('Succeed to submit survey, thanks!');
+      } else {
+        alert(data);
+      }
     }).fail(function() {
       alert('Sorry, fail to submit survey, please try it later!');
+    }).complete(function() {
+      $('#btnSubmit').val('SUBMIT');
     });
 
     return false;
