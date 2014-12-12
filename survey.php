@@ -1,49 +1,38 @@
 <?php
-  if(isset($_POST['email'])) {
+  $email_to = "llmfei@gmail.com";
+  $email_subject = "Survey";
 
-    $email_to = "llmfei@gmail.com";
-    $email_subject = "survey";
+  function died($error) {
+    echo "We are very sorry, but we found below error(s) with the survey you submitted. \n\n";
+    echo $error."\n";
+    die();
+  }
 
-    function died($error) {
-        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
-        echo "These errors appear below.<br /><br />";
-        echo $error."<br /><br />";
-        echo "Please go back and fix these errors.<br /><br />";
-        die();
-    }
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $content = $_POST['content'];
 
-    if(!isset($_POST['name']) ||
-        !isset($_POST['email']) ||
-        !isset($_POST['content'])) {
-        died('We are sorry, but there appears to be a problem with the form you submitted.');
-    }
+  if(!$name || !$email || !$content) {
+    died('Name and Email are required');
+  }
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+  function clean_string($string) {
+    $bad = array("content-type","bcc:","to:","cc:","href");
+    return str_replace($bad,"",$string);
+  }
 
-    $error_message = "";
-    if(strlen($error_message) > 0) {
-      died($error_message);
-    }
-
-    function clean_string($string) {
-      $bad = array("content-type","bcc:","to:","cc:","href");
-      return str_replace($bad,"",$string);
-    }
-
-    $content = $_POST['content'];
-    $email_message = "Form details below.\n\n";
-    $email_message .= clean_string($content)."\n";
+  $email_message = clean_string($content)."\n";
 
 
-    $headers = 'From: '.$email."\r\n".
-    'Reply-To: '.$email."\r\n" .
-    'X-Mailer: PHP/' . phpversion();
-    @mail($email_to, $email_subject, $email_message, $headers);
-?>
+  $headers = 'From: '.$email."\r\n";
+  $headers .= 'Reply-To: '.$email."\r\n";
+  $headers .= 'X-Mailer: PHP/' . phpversion()."\r\n";
+  $headers .= "Content-Type: text/html; charset=utf-8\r\n";
 
-ok
-
-<?php
-}
+  $result = @mail($email_to, $email_subject, $email_message, $headers);
+  if ($result) {
+    echo "ok";
+  } else {
+    echo "Fail to send email, please try to submit later!";
+  }
 ?>
