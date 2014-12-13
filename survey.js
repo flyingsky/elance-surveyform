@@ -22,19 +22,27 @@ $(function() {
   };
 
   // slider question
-  mgr.initSlider = function ($question) {
+  mgr.initSlider = function ($question, onlyAdjustLabels) {
     var question2Options = $question.find(".slider-labels span");
     var sliderMax = question2Options.length - 1;
     var defaultValue = parseInt(sliderMax / 2);
-
-    // setup slider
     var $slider = $question.children('.slider');
-    $slider.slider({
-      value: defaultValue,
-      min: 0,
-      max: sliderMax,
-      step: 1
-    });
+
+    if (!onlyAdjustLabels) {
+      // setup slider
+      $slider.slider({
+        value: defaultValue,
+        min: 0,
+        max: sliderMax,
+        step: 1
+      });
+
+      // add click handler on label
+      question2Options.click(function() {
+        var index = question2Options.index($(this));
+        $slider.slider('value', index);
+      });
+    }
 
     // adjust label position
     var sliderWidth = $slider.width();
@@ -44,12 +52,6 @@ $(function() {
       var labelWidth = $label.width();
       var left = Math.min(Math.max(delta * index - labelWidth / 2, 0), sliderWidth - labelWidth);
       $label.css('left', left + 'px');
-    });
-
-    // add click handler on label
-    question2Options.click(function() {
-      var index = question2Options.index($(this));
-      $slider.slider('value', index);
     });
   };
 
@@ -315,6 +317,13 @@ $(function() {
     });
 
     return false;
+  });
+
+  // change slider labels if window size is changed
+  $(window).resize(function() {
+    $('.question-slider').each(function(){
+      mgr.initSlider($(this), true);
+    });
   });
 
   execute('init');
