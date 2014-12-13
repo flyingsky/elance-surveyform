@@ -18,7 +18,7 @@ $(function() {
       return $(this).text();
     }).get().join(' / ');
 
-    return $question.find('.item-title').text() + ': ' + result;
+    return $question.find('.question-title').text() + ': ' + result;
   };
 
   // slider question
@@ -56,7 +56,7 @@ $(function() {
   mgr.collectSurveySlider = function($question) {
     var selectedLabel = $question.find('.slider-labels span')[$question.find('.slider').slider('value')];
     var result = $(selectedLabel).text();
-    return $question.find('.item-title').text() + ': ' + result;
+    return $question.find('.question-title').text() + ': ' + result;
   };
 
   // chart question
@@ -235,7 +235,7 @@ $(function() {
       return $(this).slider('value') + '%';
     }).get().join(' - ');
 
-    return $question.find('.item-title').text() + ': ' + result;
+    return $question.find('.question-title').text() + ': ' + result;
   };
 
   mgr.collectSurveyInput = function($question) {

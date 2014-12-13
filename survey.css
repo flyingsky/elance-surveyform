@@ -14,10 +14,10 @@ body {
     height: 0;
     clear: both;
 }
-.item {width: 100%; margin: 20px;}
+.question-item {width: 100%; margin: 20px;}
 .form-item {width: 45%; margin: 20px;}
 
-.item-title {
+.question-title {
     font-size: 25px;
     margin-bottom: 15px;
 }
