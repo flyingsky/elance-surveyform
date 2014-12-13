@@ -3,42 +3,73 @@
  */
 
 $(function() {
-
+  var mgr = {};
 
   // sort question
-  $( ".sortable" ).sortable({
-    placeholder: "ui-state-highlight"
-  });
-  $( ".sortable" ).disableSelection();
+  mgr.initSort = function ($question) {
+    $question.children(".sortable").sortable({
+      placeholder: "ui-state-highlight"
+    });
+    $question.children(".sortable").disableSelection();
+  };
+
+  mgr.collectSurveySort = function($question) {
+    var result = $question.find('.sortable li').map(function(){
+      return $(this).text();
+    }).get().join(' / ');
+
+    return $question.find('.item-title').text() + ': ' + result;
+  };
 
   // slider question
-  var questionStep = 10;
-  $( "#performanceSlider" ).slider({
-    value:20,
-    min: 0,
-    max: 40,
-    step: questionStep,
-    slide: function(event, ui) {
-      console.log(ui.value);
-    }
-  });
+  mgr.initSlider = function ($question) {
+    var question2Options = $question.find(".slider-labels span");
+    var sliderMax = question2Options.length - 1;
+    var defaultValue = parseInt(sliderMax / 2);
 
-  var question2Options = $( "#performanceLabels span");
-  question2Options.click(function() {
-    var index = question2Options.index($(this));
-    $("#performanceSlider").slider('value', index * questionStep);
-  });
+    // setup slider
+    var $slider = $question.children('.slider');
+    $slider.slider({
+      value: defaultValue,
+      min: 0,
+      max: sliderMax,
+      step: 1
+    });
+
+    // adjust label position
+    var sliderWidth = $slider.width();
+    var delta = sliderWidth / (question2Options.length - 1);
+    question2Options.each(function(index){
+      var $label = $(this);
+      var labelWidth = $label.width();
+      var left = Math.min(Math.max(delta * index - labelWidth / 2, 0), sliderWidth - labelWidth);
+      $label.css('left', left + 'px');
+    });
+
+    // add click handler on label
+    question2Options.click(function() {
+      var index = question2Options.index($(this));
+      $slider.slider('value', index);
+    });
+  };
+
+  mgr.collectSurveySlider = function($question) {
+    var selectedLabel = $question.find('.slider-labels span')[$question.find('.slider').slider('value')];
+    var result = $(selectedLabel).text();
+    return $question.find('.item-title').text() + ': ' + result;
+  };
 
   // chart question
-  function getChartSliders() {
-    return $('#sliders > span.chart-slider');
+  function getChartSliders($question) {
+    return $question.find('.sliders > span.chart-slider');
   }
 
-  (function question3() {
-    var titles = ['Terrible', 'Not Good', 'Average', 'Good', 'Excellent'];
+  mgr.initChart = function($question) {
+    var data = [];
+    var questionId = 'chart-' + new Date().getTime();
 
-    var data = $(titles).map(function(i) {
-      return {title: titles[i]};
+    getChartSliders($question).each(function(){
+      data.push({title: $(this).attr('data-title')});
     });
 
     var colors = ["#f7f06c", "#f37648", "#99ce9a", "#8ed3d8", "#cb9ac7"];
@@ -47,7 +78,7 @@ $(function() {
     });
 
     // set legend for labels
-    var labels = $('#sliders label');
+    var labels = $question.find('.sliders label');
     labels.each(function(index){
       $(this).css('border-left', '18px solid ' + colors[index]);
     });
@@ -58,17 +89,18 @@ $(function() {
 
     var drawChart = function(animation) {
       // remove chart
-      $('.chart').empty();
-      $('.pieTip').remove();
+      $question.find('.chart').empty();
+      $('.' + questionId).remove();
 
-      $(".chart").drawPieChart(data, {
-        animation: true
+      $question.find(".chart").drawPieChart(data, {
+        animation: true,
+        tipClass: 'pieTip ' + questionId
       });
     };
 
     function getUnlockedSliders () {
       var count = 0;
-      getChartSliders().each(function(index, item) {
+      getChartSliders($question).each(function(index, item) {
         if (!$(item).data('locked')) {
           count++;
         }
@@ -84,7 +116,7 @@ $(function() {
       var delta = (changes - mod) / count;
       var modSign = mod > 0 ? 1 : -1;
       for (var i = count - 1; i >= 0; i--) {
-        deltas[i] = delta + (mod !== 0 ? 1 : 0) * modSign
+        deltas[i] = delta + (mod !== 0 ? 1 : 0) * modSign;
         mod = mod === 0 ? 0 : (mod - modSign);
       }
       return deltas;
@@ -93,7 +125,7 @@ $(function() {
     function getMinValueFromUnlockedSlider() {
       var minSlider = null;
       var minValue = 101;
-      getChartSliders().each(function(index) {
+      getChartSliders($question).each(function(index) {
         var sliderEl = $(this);
         if (!sliderEl.data('locked') && !sliderEl.data('processed') && sliderEl.slider('value') < minValue) {
           minSlider = sliderEl;
@@ -105,7 +137,7 @@ $(function() {
 
     function getChartSliderSum() {
       var sum = 0;
-      getChartSliders().each(function(){
+      getChartSliders($question).each(function(){
         sum += $(this).slider('value');
       });
       return sum;
@@ -138,14 +170,14 @@ $(function() {
       }
 
       // clear handle flag
-      getChartSliders().each(function(index) {
+      getChartSliders($question).each(function(index) {
         $(this).data('processed', false);
       });
 
       // check sum <= 100
       var sum = getChartSliderSum();
       if (sum > 100) {
-        var srcSliderEl = $(getChartSliders()[srcIndex]);
+        var srcSliderEl = $(getChartSliders($question)[srcIndex]);
         var newValue = srcSliderEl.slider('value') - (sum - 100);
         srcSliderEl.slider('value', newValue);
         changeTitle(srcIndex, newValue);
@@ -156,7 +188,7 @@ $(function() {
     };
 
     // setup chart sliders
-    getChartSliders().each(function(index) {
+    getChartSliders($question).each(function(index) {
       // read initial values from markup and remove that
       var value = parseInt($(this).text(), 10);
       data[index].value = value;
@@ -189,36 +221,43 @@ $(function() {
     });
 
     // setup lock
-    $('#sliders input').click(function(){
+    $('.sliders input').click(function(){
       var locked = $(this).is(':checked');
-      var index = $('#sliders input').index($(this));
-      $(getChartSliders()[index]).data('locked', locked);
+      var index = $('.sliders input').index($(this));
+      $(getChartSliders($question)[index]).data('locked', locked);
     });
 
     drawChart(false);
-  })();
+  };
 
-  // setup submit
-  function collectSurvey() {
-    var result = [];
-    // question 1
-    var question1 = $('.sortable li').map(function(){
-      return $(this).text();
-    }).get().join(' / ');
-    result.push('1. Rank: ' + question1);
-
-    // question 2
-    var selectedLabel = $('#performanceLabels span')[$('#performanceSlider').slider('value') / 10];
-    var question2 = $(selectedLabel).text();
-    result.push('2. ' + question2);
-
-    // question 3
-    var question3 = getChartSliders().map(function(){
+  mgr.collectSurveyChart = function($question) {
+    var result = getChartSliders($question).map(function(){
       return $(this).slider('value') + '%';
     }).get().join(' - ');
-    result.push('3. ' + question3);
 
-    result.push('Name: ' + $('#name').val(), 'Email: ' + $('#email').val());
+    return $question.find('.item-title').text() + ': ' + result;
+  };
+
+  mgr.collectSurveyInput = function($question) {
+    var result = $question.val();
+    return $question.attr('data-title') + ': ' + result;
+  };
+
+  function execute(methodType) {
+    var result = [];
+    $('.question').each(function(){
+      var $question = $(this);
+      var questionTypes = ['question-sort', 'question-slider', 'question-chart', 'question-input'];
+      $(questionTypes).each(function(index, type) {
+        if ($question.hasClass(type)) {
+          var m = type.replace('question-', '');
+          var method = mgr[methodType + m[0].toUpperCase() + m.substr(1)];
+          if (method) {
+            result.push(method($question));
+          }
+        }
+      });
+    });
 
     return result;
   }
@@ -249,7 +288,7 @@ $(function() {
       return false;
     }
 
-    var result = collectSurvey();
+    var result = execute('collectSurvey');
     if (!confirm('Are you sure to submit this survey: \n' + result.join('\n'))) {
       return false;
     }
@@ -277,4 +316,6 @@ $(function() {
 
     return false;
   });
+
+  execute('init');
 });

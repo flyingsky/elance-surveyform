@@ -44,12 +44,15 @@ body {
 .sortable .ui-state-default { background: #f5f5f5 !important;}
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 
-#performanceLabels {margin-bottom: 10px;}
-#performanceLabels span {display: inline-block; width: 20%; margin-left: -4px; cursor: pointer;}
-#performanceLabels .option1 {margin-left: 0px;}
-#performanceLabels .option3 {text-align: center;}
-#performanceLabels .option4 {text-align: right;}
-#performanceLabels .option5 {text-align: right;}
+.slider-labels {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.slider-labels span {
+    position: absolute;
+    cursor: pointer;
+}
 
 .slider {background: #ddd; height: 7px;}
 .slider .ui-state-default {background: #9a9a9a;}
@@ -62,18 +65,18 @@ body {
     left: 50%;
 }
 
-#sliders {
+.sliders {
     float: left;
 }
 
-#sliders > span.chart-slider {
+.sliders > span.chart-slider {
     width:200px;
     margin:10px;
     float: left;
     clear: both;
 }
 
-#sliders label {
+.sliders label {
     width: 200px;
     margin-left: 10px;
     float: left;

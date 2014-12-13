@@ -9,7 +9,6 @@
   <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
   <script src="jquery.drawPieChart.js"></script>
-  <script src="survey.js"></script>
 
 <!--
   <link rel="stylesheet" href="ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -22,7 +21,7 @@
 <body>
 <div class="survey">
   <div class="column">
-    <div class="item">
+    <div class="item question question-sort">
       <div class="item-title">1. Rank in order of importance</div>
       <ul class="sortable">
         <li class="ui-state-default"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Option 1</li>
@@ -32,38 +31,38 @@
       </ul>
     </div>
 
-    <div class="item">
+    <div class="item question question-slider">
       <div class="item-title">2. Rate my performance</div>
-      <div id="performanceLabels">
+      <div class="slider-labels">
         <span class="option1">Terrible</span>
         <span class="option2">Not Good</span>
         <span class="option3">Average</span>
         <span class="option4">Good</span>
         <span class="option5">Excellent</span>
       </div>
-      <div class="slider" id="performanceSlider"></div>
+      <div class="slider"></div>
     </div>
   </div>
 
   <div class="column">
-    <div class="item question3">
+    <div class="item question3 question question-chart">
       <div class="item-title">3. Priorities</div>
       <div class="chart"></div>
-      <div id="sliders">
+      <div class="sliders">
         <span class="title-lock">Lock</span>
-        <span class="chart-slider slider">20</span>
+        <span class="chart-slider slider" data-title="Terrible">20</span>
         <input type="checkbox">
         <label></label>
-        <span class="chart-slider slider">20</span>
+        <span class="chart-slider slider" data-title="Not Good">20</span>
         <input type="checkbox">
         <label></label>
-        <span class="chart-slider slider">20</span>
+        <span class="chart-slider slider" data-title="Average">20</span>
         <input type="checkbox">
         <label></label>
-        <span class="chart-slider slider">20</span>
+        <span class="chart-slider slider" data-title="Good">20</span>
         <input type="checkbox">
         <label></label>
-        <span class="chart-slider slider">20</span>
+        <span class="chart-slider slider" data-title="Excellent">20</span>
         <input type="checkbox">
         <label></label>
       </div>
@@ -73,16 +72,18 @@
 
 <form method="post">
   <div class="form-item">
-    <input class="input" type="text" name="name" id="name" placeholder="Your name">
+    <input class="input question question-input" data-title="Name" type="text" name="name" id="name" placeholder="Your name">
   </div>
 
   <div class="form-item pull-left ">
-    <input class="input" type="email" name="email" id="email" placeholder="E-mail address">
+    <input class="input question question-input" data-title="Email" type="email" name="email" id="email" placeholder="E-mail address">
   </div>
 
   <div class="form-item pull-right" style="text-align: center">
     <input class="input" type="submit" value="SUBMIT" id="btnSubmit">
   </div>
 </form>
+
+<script src="survey.js"></script>
 </body>
 </html>
