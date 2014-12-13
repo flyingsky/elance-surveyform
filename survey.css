@@ -36,6 +36,7 @@ body {
 
 .column {
     width: 50%;
+    float: left;
 }
 
 .sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
@@ -57,13 +58,6 @@ body {
 .slider {background: #ddd; height: 7px;}
 .slider .ui-state-default {background: #9a9a9a;}
 .slider .ui-slider-handle {width: 16px; height: 16px; border-radius: 8px;}
-
-/** question 3 */
-.question3 {
-    position: absolute;
-    top: 0px;
-    left: 50%;
-}
 
 .sliders {
     float: left;
