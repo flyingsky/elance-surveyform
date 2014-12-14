@@ -16,20 +16,10 @@
     died('Name and Email are required');
   }
 
-  function clean_string($string) {
-    $bad = array("content-type","bcc:","to:","cc:","href");
-    return str_replace($bad,"",$string);
-  }
+  $file = fopen("survey.csv", "a");
+  $result = fputcsv($file,explode('<br/>', $content));
+  fclose($file);
 
-  $email_message = clean_string($content)."\n";
-
-
-  $headers = 'From: '.$email."\r\n";
-  $headers .= 'Reply-To: '.$email."\r\n";
-  $headers .= 'X-Mailer: PHP/' . phpversion()."\r\n";
-  $headers .= "Content-Type: text/html; charset=utf-8\r\n";
-
-  $result = @mail($email_to, $email_subject, $email_message, $headers);
   if ($result) {
     echo "ok";
   } else {
