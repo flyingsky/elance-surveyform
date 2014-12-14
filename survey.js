@@ -302,7 +302,7 @@ $(function() {
       data: {
         name: $('#name').val(),
         email: $('#email').val(),
-        content: result.join(' <br/> ')
+        content: result.join('<br/>')
       }
     }).success(function(data) {
       if (data === 'ok') {
