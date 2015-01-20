@@ -87,6 +87,7 @@ $(function() {
 
     var changeTitle = function(index, value) {
       $(labels[index]).text(data[index].title + ': ' + value + '%');
+      data[index].value = value;
     };
 
     var drawChart = function(animation) {
@@ -168,7 +169,6 @@ $(function() {
         sliderEl.slider('value', newValue);
         var sliderIndex = sliderEl.data('index');
         changeTitle(sliderIndex, newValue);
-        data[sliderIndex].value = newValue;
       }
 
       // clear handle flag
@@ -245,11 +245,26 @@ $(function() {
     return $question.attr('data-title') + ': ' + result;
   };
 
+  mgr.collectSurveyCheckbox = function($question) {
+    var result = [];
+    var checkedOptions = $question.find('input[type=checkbox]:checked');
+    checkedOptions.each(function(index, item) {
+      result.push($(item).val());
+    });
+
+    var $txtInput = $question.find('input[type=text]');
+    if ($txtInput) {
+      result.push($txtInput.val());
+    }
+
+    return $question.find('.question-title').text() + ': ' + result.join(';');
+  };
+
   function execute(methodType) {
     var result = [];
     $('.question').each(function(){
       var $question = $(this);
-      var questionTypes = ['question-sort', 'question-slider', 'question-chart', 'question-input'];
+      var questionTypes = ['question-sort', 'question-slider', 'question-chart', 'question-input', 'question-checkbox'];
       $(questionTypes).each(function(index, type) {
         if ($question.hasClass(type)) {
           var m = type.replace('question-', '');

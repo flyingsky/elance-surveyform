@@ -134,3 +134,22 @@ input[type=checkbox] {
     line-height: 0;
 }
 .chart path { cursor: pointer; }
+
+/*******************check box question*****************/
+.question-checkbox label {
+    display: block;
+}
+.question-checkbox input[type=checkbox] {
+    float: none;
+    display: inline-block;
+}
+
+.question-checkbox input[type=text] {
+    width: 80%;
+    height: 20px;
+    margin-top: 10px;
+}
+
+.question-checkbox .custom-option {
+    margin-top: 10px;
+}
